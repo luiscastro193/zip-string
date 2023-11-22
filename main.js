@@ -13,7 +13,9 @@ async function updateResults() {
 		let compressed = await zip(originalString.value);
 		if (id == lastId) {
 			result.textContent = compressed;
-			difference.textContent = encodeURIComponent(originalString.value).length - compressed.length;
+			let originalSize = encodeURIComponent(originalString.value).length;
+			let sizeDifference = originalSize - compressed.length;
+			difference.textContent = `${sizeDifference} (${Math.round(sizeDifference / originalSize * 100)}%)`;
 		}
 	}
 	else {
