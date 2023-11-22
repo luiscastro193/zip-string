@@ -1,6 +1,5 @@
 "use strict";
-const encoder = new TextEncoder();
-const decoder = new TextDecoder();
+const decoder = new TextDecoder("utf-8", {fatal: true});
 
 function toBase64url(base64) {
 	return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -19,7 +18,7 @@ function toBuffer(string) {
 }
 
 export async function zip(string) {
-	let stream = new Blob([encoder.encode(string)]).stream().pipeThrough(new CompressionStream("deflate"));
+	let stream = new Blob([string]).stream().pipeThrough(new CompressionStream("deflate"));
 	return toString(await new Response(stream).arrayBuffer());
 }
 
