@@ -2,8 +2,13 @@
 import {zip} from './zip-string.js';
 
 const originalString = document.querySelector("textarea");
-const [result, difference] = document.querySelectorAll("span");
+const [result, difference, differenceAsUrl] = document.querySelectorAll("span");
 let lastId = 0;
+
+function differenceText(original, compressed) {
+	let sizeDifference = original.length - compressed.length;
+	return `${sizeDifference} (${Math.round(sizeDifference / original.length * 100)}%)`;
+}
 
 async function updateResults() {
 	lastId = (lastId + 1) % Number.MAX_SAFE_INTEGER;
@@ -13,9 +18,8 @@ async function updateResults() {
 		let compressed = await zip(originalString.value);
 		if (id == lastId) {
 			result.textContent = compressed;
-			let originalSize = encodeURIComponent(originalString.value).length;
-			let sizeDifference = originalSize - compressed.length;
-			difference.textContent = `${sizeDifference} (${Math.round(sizeDifference / originalSize * 100)}%)`;
+			difference.textContent = differenceText(originalString.value, compressed);
+			differenceAsUrl.textContent = differenceText(encodeURIComponent(originalString.value), compressed);
 		}
 	}
 	else {
