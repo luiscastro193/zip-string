@@ -11,8 +11,7 @@ function differenceText(original, compressed) {
 }
 
 async function updateResults() {
-	lastId = (lastId + 1) % Number.MAX_SAFE_INTEGER;
-	const id = lastId;
+	const id = lastId = (lastId + 1) % Number.MAX_SAFE_INTEGER;
 	
 	if (originalString.value) {
 		let compressed = await zip(originalString.value);
