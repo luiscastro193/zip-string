@@ -10,7 +10,7 @@ function toBase64(base64url) {
 }
 
 function toString(buffer) {
-	return toBase64url(btoa(String.fromCodePoint(...Array.from(new Uint8Array(buffer)))));
+	return toBase64url(btoa(String.fromCodePoint(...new Uint8Array(buffer))));
 }
 
 function toBuffer(string) {
