@@ -24,6 +24,7 @@ async function updateResults() {
 	else {
 		result.textContent = '';
 		difference.textContent = '';
+		differenceAsUrl.textContent = '';
 	}
 }
 
