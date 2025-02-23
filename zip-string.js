@@ -2,19 +2,26 @@
 const decoder = new TextDecoder("utf-8", {fatal: true});
 
 function toBase64url(base64) {
-	return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+	return base64.replaceAll('+', '-').replaceAll('/', '_').replace(/=+$/, '');
 }
 
 function toBase64(base64url) {
-	return base64url.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - base64url.length % 4) % 4);
+	return base64url.replaceAll('-', '+').replaceAll('_', '/');
 }
 
 function toString(buffer) {
-	return toBase64url(btoa(String.fromCodePoint(...new Uint8Array(buffer))));
+	buffer = new Uint8Array(buffer);
+	if (buffer.toBase64)
+		return buffer.toBase64({alphabet: "base64url", omitPadding: true});
+	else
+		return toBase64url(btoa(String.fromCodePoint(...buffer)));
 }
 
 function toBuffer(string) {
-	return Uint8Array.from(atob(toBase64(string)), c => c.codePointAt(0));
+	if (Uint8Array.fromBase64)
+		return Uint8Array.fromBase64(string, {alphabet: "base64url"});
+	else
+		return Uint8Array.from(atob(toBase64(string)), c => c.codePointAt(0));
 }
 
 export async function zip(string) {
